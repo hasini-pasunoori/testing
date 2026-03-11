@@ -1,0 +1,3188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberGuard — Cyberbullying Awareness Research</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #080b12;
+      --surface: #0e1220;
+      --surface2: #111624;
+      --card: #141829;
+      --card2: #181d2e;
+      --red: #e05252;
+      --red-dark: #c0392b;
+      --red-glow: rgba(224, 82, 82, 0.18);
+      --red-border: rgba(224, 82, 82, 0.22);
+      --gold: #d4a94e;
+      --gold-glow: rgba(212, 169, 78, 0.12);
+      --blue: #4f8ef7;
+      --text: #c8cfe0;
+      --text-bright: #edf0f8;
+      --muted: #5a6278;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.1);
+      --white: #ffffff;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data%3Aimage/svg%2Bxml%2C%3Csvg%20viewBox%3D%270%200%20256%20256%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cfilter%20id%3D%27noise%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%274%27%20stitchTiles%3D%27stitch%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* CURSOR - desktop only */
+    @media(hover:hover) {
+      body {
+        cursor: none;
+      }
+
+      .cursor {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        background: var(--red);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transition: transform 0.12s ease;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 12px var(--red);
+      }
+
+      .cursor-ring {
+        position: fixed;
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(224, 82, 82, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.3s;
+      }
+    }
+
+    @media(hover:none) {
+
+      .cursor,
+      .cursor-ring {
+        display: none;
+      }
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(8, 11, 18, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      min-height: 64px;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--text-bright);
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.5rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.5px;
+      margin-top: 5px;
+      text-transform: uppercase;
+      background: var(--red);
+      padding: 2px 7px;
+      border-radius: 4px;
+      box-shadow: 0 0 12px rgba(224, 82, 82, 0.4);
+      display: none;
+    }
+
+    .logo-pill {
+      background: var(--red);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      box-shadow: 0 0 14px rgba(224, 82, 82, 0.4);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-bright);
+    }
+
+    .nav-btn {
+      padding: 9px 20px;
+      background: transparent;
+      border: 1px solid var(--red-border);
+      color: var(--red);
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 16px rgba(224, 82, 82, 0.08);
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 0 24px rgba(224, 82, 82, 0.35);
+    }
+
+    /* Mobile Toggle */
+    .mobile-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      margin-left: auto;
+      background: none;
+      border: none;
+    }
+
+    .mobile-toggle span {
+      width: 22px;
+      height: 2px;
+      background: var(--text-bright);
+      transition: 0.3s;
+      display: block;
+    }
+
+    .mobile-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .mobile-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg);
+      padding: 24px 20px;
+      z-index: 400;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      transition: color 0.2s;
+      display: block;
+    }
+
+    .mobile-menu a:hover,
+    .mobile-menu a:active {
+      color: var(--red);
+    }
+
+    .mobile-menu .mobile-survey-btn {
+      margin-top: 12px;
+      padding: 16px;
+      background: var(--red);
+      color: #fff;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      border: none;
+      box-shadow: 0 0 24px rgba(224, 82, 82, 0.3);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 100px 60px 80px;
+      position: relative;
+      overflow: hidden;
+      gap: 40px;
+    }
+
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(100px);
+    }
+
+    .blob1 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(224, 82, 82, 0.12), transparent 70%);
+      top: -80px;
+      left: -80px;
+    }
+
+    .blob2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(79, 142, 247, 0.08), transparent 70%);
+      bottom: 0;
+      right: 100px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(224, 82, 82, 0.25) 40%, rgba(224, 82, 82, 0.25) 60%, transparent);
+    }
+
+    .hero-left {
+      position: relative;
+      z-index: 2;
+      padding-right: 40px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 24px;
+    }
+
+    .eyebrow-line {
+      width: 28px;
+      height: 1px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 4.5vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -2px;
+      color: var(--text-bright);
+      margin-bottom: 16px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--red);
+      text-shadow: 0 0 40px rgba(224, 82, 82, 0.4);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 460px;
+      margin-bottom: 40px;
+      font-weight: 300;
+      border-left: 2px solid rgba(224, 82, 82, 0.4);
+      padding-left: 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-red {
+      padding: 13px 28px;
+      background: var(--red);
+      color: #fff;
+      border-radius: 7px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+      letter-spacing: 0.3px;
+      box-shadow: 0 0 28px rgba(224, 82, 82, 0.3);
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-red:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(224, 82, 82, 0.45);
+    }
+
+    .btn-ghost {
+      padding: 13px 28px;
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      border-radius: 7px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.25s;
+      background: rgba(255, 255, 255, 0.03);
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--red-border);
+      color: var(--text-bright);
+      background: rgba(224, 82, 82, 0.06);
+    }
+
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .hero-stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 26px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      animation: fadeUp 0.8s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(224, 82, 82, 0.4), transparent);
+    }
+
+    .hero-stat-card:nth-child(1) {
+      animation-delay: 0.15s;
+    }
+
+    .hero-stat-card:nth-child(2) {
+      animation-delay: 0.28s;
+    }
+
+    .hero-stat-card:nth-child(3) {
+      animation-delay: 0.41s;
+    }
+
+    .hero-stat-card:hover {
+      border-color: var(--red-border);
+      box-shadow: 0 0 30px rgba(224, 82, 82, 0.08);
+    }
+
+    .stat-big {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--text-bright);
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+
+    .stat-big span {
+      color: var(--red);
+      font-style: italic;
+    }
+
+    .stat-desc {
+      font-size: 0.81rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.55;
+    }
+
+    /* RESEARCH */
+    .research {
+      background: var(--surface);
+      padding: 90px 60px;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .research-blob {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 169, 78, 0.06), transparent 70%);
+      top: -50px;
+      right: 200px;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .research-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: start;
+    }
+
+    .section-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-tag::before {
+      content: '';
+      width: 18px;
+      height: 1px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    .research h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 2.8vw, 2.7rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text-bright);
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .research h2 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .research-desc {
+      font-size: 0.89rem;
+      color: var(--muted);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .team-card {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      transition: all 0.25s;
+    }
+
+    .team-card:hover {
+      background: rgba(224, 82, 82, 0.06);
+      border-color: var(--red-border);
+      transform: translateY(-2px);
+    }
+
+    .team-role {
+      font-size: 0.63rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 5px;
+    }
+
+    .team-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-bright);
+    }
+
+    .grant-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      background: var(--gold-glow);
+      border: 1px solid rgba(212, 169, 78, 0.2);
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+    }
+
+    /* IMPACT */
+    .impact {
+      padding: 90px 60px;
+      background: var(--bg);
+    }
+
+    .impact-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 50px;
+    }
+
+    .impact h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      color: var(--text-bright);
+      line-height: 1.1;
+      max-width: 440px;
+    }
+
+    .impact h2 em {
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .impact-sub {
+      max-width: 300px;
+      font-size: 0.87rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .impact-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .impact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .impact-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .impact-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--red-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(224, 82, 82, 0.1);
+    }
+
+    .impact-card:hover::after {
+      opacity: 1;
+    }
+
+    .impact-icon {
+      font-size: 2rem;
+      margin-bottom: 18px;
+    }
+
+    .impact-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .impact-card p {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .tag-red {
+      background: rgba(224, 82, 82, 0.1);
+      color: var(--red);
+    }
+
+    .tag-gold {
+      background: rgba(212, 169, 78, 0.1);
+      color: var(--gold);
+    }
+
+    .tag-blue {
+      background: rgba(79, 142, 247, 0.1);
+      color: var(--blue);
+    }
+
+    /* FACES */
+    .faces {
+      padding: 90px 60px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .faces-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 70px;
+      align-items: start;
+    }
+
+    .faces h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .faces h2 em {
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .faces-sub {
+      font-size: 0.89rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 32px;
+    }
+
+    .tactic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .tactic {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .tactic:hover {
+      background: rgba(224, 82, 82, 0.07);
+      border-color: var(--red-border);
+      transform: translateX(6px);
+      box-shadow: inset 3px 0 0 var(--red);
+    }
+
+    .tactic-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: rgba(224, 82, 82, 0.2);
+      line-height: 1;
+      min-width: 30px;
+    }
+
+    .tactic-info h4 {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 2px;
+    }
+
+    .tactic-info p {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .quote-block {
+      border-left: 3px solid var(--red);
+      padding: 24px 28px;
+      background: var(--card);
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 18px;
+      box-shadow: inset 0 0 60px rgba(224, 82, 82, 0.03);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text-bright);
+      line-height: 1.6;
+      letter-spacing: -0.2px;
+    }
+
+    .quote-source {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    .signs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .sign-item {
+      padding: 14px 16px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.65;
+      transition: border-color 0.2s;
+    }
+
+    .sign-item:hover {
+      border-color: rgba(224, 82, 82, 0.2);
+    }
+
+    .sign-item strong {
+      color: var(--text-bright);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.82rem;
+    }
+
+    /* SUPPORT */
+    .support {
+      padding: 90px 60px;
+      background: var(--bg);
+    }
+
+    .support-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: start;
+    }
+
+    .support h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .support h2 em {
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .support-text {
+      font-size: 0.89rem;
+      color: var(--muted);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 32px;
+    }
+
+    .support-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1px solid var(--red-border);
+      display: grid;
+      place-items: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 0.95rem;
+      color: var(--red);
+      box-shadow: 0 0 16px rgba(224, 82, 82, 0.12);
+    }
+
+    .step-body h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 3px;
+    }
+
+    .step-body p {
+      font-size: 0.81rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    .support-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 36px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .support-visual::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(224, 82, 82, 0.12), transparent 70%);
+      pointer-events: none;
+    }
+
+    .support-visual h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 24px;
+      letter-spacing: -0.3px;
+    }
+
+    .resource-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .resource {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.22s;
+    }
+
+    .resource:hover {
+      border-color: var(--red-border);
+      background: rgba(224, 82, 82, 0.05);
+      transform: translateX(4px);
+    }
+
+    .resource-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .resource-text strong {
+      font-size: 0.86rem;
+      color: var(--text-bright);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .resource-text span {
+      font-size: 0.73rem;
+      color: var(--muted);
+    }
+
+    /* SAFETY */
+    .safety {
+      background: var(--surface);
+      padding: 90px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .safety-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 52px;
+    }
+
+    .safety h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .safety h2 em {
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .safety-sub {
+      font-size: 0.89rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .safety-tips {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .safety-tip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px 24px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .safety-tip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.3s;
+    }
+
+    .safety-tip:hover::before {
+      transform: scaleX(1);
+    }
+
+    .safety-tip:hover {
+      transform: translateY(-5px);
+      border-color: var(--red-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(224, 82, 82, 0.08);
+    }
+
+    .tip-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.04);
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: -2px;
+    }
+
+    .safety-tip h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 8px;
+    }
+
+    .safety-tip p {
+      font-size: 0.81rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* ── SURVEY ── */
+    .survey {
+      padding: 90px 60px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+
+    .survey::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(224, 82, 82, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .survey-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .survey-left .section-tag {
+      margin-bottom: 18px;
+    }
+
+    .survey-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .survey-left h2 em {
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .survey-left p {
+      font-size: 0.89rem;
+      color: var(--muted);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .survey-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .survey-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.81rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .survey-meta-item .meta-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      background: rgba(224, 82, 82, 0.1);
+      border: 1px solid var(--red-border);
+      display: grid;
+      place-items: center;
+      font-size: 0.9rem;
+    }
+
+    .survey-meta-item strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .survey-disclaimer {
+      padding: 14px 16px;
+      background: rgba(212, 169, 78, 0.07);
+      border: 1px solid rgba(212, 169, 78, 0.18);
+      border-radius: 10px;
+      font-size: 0.77rem;
+      color: rgba(212, 169, 78, 0.85);
+      line-height: 1.65;
+    }
+
+    /* Survey frame - desktop */
+    .survey-right {
+      position: relative;
+    }
+
+    .survey-frame-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 0 0 1px rgba(224, 82, 82, 0.08), 0 32px 80px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .survey-frame-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), var(--gold), transparent);
+      z-index: 2;
+    }
+
+    .survey-frame-bar {
+      background: var(--card2);
+      border-bottom: 1px solid var(--border);
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .frame-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .fd1 {
+      background: #ff5f57;
+    }
+
+    .fd2 {
+      background: #febc2e;
+    }
+
+    .fd3 {
+      background: #28c840;
+    }
+
+    .frame-url {
+      flex: 1;
+      margin-left: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: 'Outfit', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .survey-iframe {
+      width: 100%;
+      height: 680px;
+      border: none;
+      display: block;
+      background: var(--card);
+    }
+
+    /* Mobile survey CTA (shown only on mobile) */
+    .survey-mobile-cta {
+      display: none;
+    }
+
+    .survey-open-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 18px 24px;
+      background: var(--red);
+      color: #fff;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      box-shadow: 0 0 32px rgba(224, 82, 82, 0.35);
+      transition: all 0.25s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .survey-open-btn:hover {
+      background: var(--red-dark);
+      box-shadow: 0 0 48px rgba(224, 82, 82, 0.5);
+    }
+
+    .survey-open-btn svg {
+      flex-shrink: 0;
+    }
+
+    .survey-card {
+      background: var(--card);
+      border: 1px solid var(--red-border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-top: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .survey-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), var(--gold), transparent);
+    }
+
+    .survey-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 10px;
+    }
+
+    .survey-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .survey-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .survey-chip {
+      padding: 5px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* COMMUNITY */
+    .community {
+      padding: 110px 60px;
+      background: var(--bg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+
+    .community::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% -10%, rgba(224, 82, 82, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .community-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .community h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      color: var(--text-bright);
+      line-height: 1.0;
+      margin-bottom: 16px;
+    }
+
+    .community h2 em {
+      font-style: italic;
+      color: var(--red);
+      text-shadow: 0 0 60px rgba(224, 82, 82, 0.3);
+    }
+
+    .community-sub {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 44px;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 10px;
+      max-width: 460px;
+      margin: 0 auto 32px;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 13px 16px;
+      background: var(--card);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      color: var(--text-bright);
+      font-size: 0.87rem;
+      font-family: 'Outfit', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 0;
+    }
+
+    .newsletter-input::placeholder {
+      color: var(--muted);
+    }
+
+    .newsletter-input:focus {
+      border-color: var(--red-border);
+      box-shadow: 0 0 0 3px rgba(224, 82, 82, 0.08);
+    }
+
+    .btn-subscribe {
+      padding: 13px 24px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.87rem;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      box-shadow: 0 0 24px rgba(224, 82, 82, 0.3);
+      flex-shrink: 0;
+    }
+
+    .btn-subscribe:hover {
+      background: var(--red-dark);
+      box-shadow: 0 0 40px rgba(224, 82, 82, 0.45);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--card);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      border-color: var(--red-border);
+      color: var(--text-bright);
+      background: rgba(224, 82, 82, 0.06);
+    }
+
+    footer {
+      padding: 24px 40px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 0.95rem;
+      color: var(--text-bright);
+    }
+
+    .footer-copy {
+      font-size: 0.73rem;
+      color: var(--muted);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 60px;
+    }
+
+    /* WORKSHOPS */
+    .workshops {
+      padding: 120px 0;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glowing central track */
+    .workshops::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom,
+          transparent,
+          var(--red),
+          rgba(224, 82, 82, 0.8),
+          rgba(224, 82, 82, 0.3),
+          transparent);
+      box-shadow: 0 0 15px rgba(224, 82, 82, 0.4);
+      z-index: 1;
+      transform: translateX(-50%);
+      animation: linePulse 4s ease-in-out infinite;
+    }
+
+    @keyframes linePulse {
+
+      0%,
+      100% {
+        opacity: 0.4;
+        box-shadow: 0 0 10px rgba(224, 82, 82, 0.2);
+      }
+
+      50% {
+        opacity: 1;
+        box-shadow: 0 0 25px rgba(224, 82, 82, 0.6);
+      }
+    }
+
+    /* Background floating shapes */
+    .workshops-bg-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .bg-shape {
+      position: absolute;
+      border: 1px solid rgba(224, 82, 82, 0.1);
+      animation: float 20s linear infinite;
+    }
+
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: -50px;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+
+    .shape-2 {
+      width: 400px;
+      height: 400px;
+      bottom: 10%;
+      right: -100px;
+      border-radius: 50%;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      33% {
+        transform: translate(30px, 50px) rotate(120deg);
+      }
+
+      66% {
+        transform: translate(-20px, 20px) rotate(240deg);
+      }
+
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+      }
+    }
+
+    .workshops-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .workshops h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 24px;
+      letter-spacing: -2px;
+      line-height: 1;
+      color: var(--text-bright);
+    }
+
+    .workshops h2 em {
+      font-style: italic;
+      color: var(--red);
+      text-shadow: 0 0 20px rgba(224, 82, 82, 0.3);
+    }
+
+    .workshops-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .chronicles-track {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      z-index: 2;
+    }
+
+    .chronicle-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      margin-bottom: 120px;
+      align-items: center;
+      position: relative;
+    }
+
+    .chronicle-item:nth-child(even) {
+      direction: rtl;
+    }
+
+    .chronicle-item:nth-child(even) .chronicle-content {
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Center dot with pulse */
+    .chronicle-item::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      background: var(--red);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      box-shadow: 0 0 0 6px var(--bg), 0 0 20px rgba(224, 82, 82, 0.6);
+      transition: all 0.4s ease;
+    }
+
+    .chronicle-item:hover::before {
+      transform: translate(-50%, -50%) scale(1.3);
+      box-shadow: 0 0 0 8px var(--bg), 0 0 30px var(--red);
+    }
+
+    .chronicle-date-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .chronicle-item:nth-child(even) .chronicle-date-wrap {
+      align-items: flex-start;
+    }
+
+    .chronicle-year {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 5rem;
+      line-height: 0.9;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
+      margin-bottom: 5px;
+      transition: all 0.5s ease;
+    }
+
+    .chronicle-item:hover .chronicle-year {
+      -webkit-text-stroke: 1px rgba(224, 82, 82, 0.3);
+      transform: translateX(-10px);
+    }
+
+    .chronicle-item:nth-child(even):hover .chronicle-year {
+      transform: translateX(10px);
+    }
+
+    .chronicle-day {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--red);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .chronicle-content {
+      padding: 50px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+      backdrop-filter: blur(15px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chronicle-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(224, 82, 82, 0.05), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.8s ease;
+    }
+
+    .chronicle-item:hover .chronicle-content {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(224, 82, 82, 0.3);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(224, 82, 82, 0.1);
+    }
+
+    .chronicle-item:hover .chronicle-content::before {
+      transform: translateX(100%);
+    }
+
+    .chronicle-icon {
+      font-size: 2.5rem;
+      margin-bottom: 24px;
+      display: block;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+      transition: transform 0.4s ease;
+    }
+
+    .chronicle-item:hover .chronicle-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .chronicle-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .chronicle-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .chronicle-highlights {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 20px;
+    }
+
+    .chronicle-highlights li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .chronicle-highlights li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 10px;
+      height: 2px;
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red);
+    }
+
+    .chronicle-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .chronicle-gallery img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .chronicle-gallery img:hover {
+      transform: scale(1.05) translateY(-5px);
+      border-color: rgba(224, 82, 82, 0.4);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+
+    @media(max-width:480px) {
+      .chronicle-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:860px) {
+      .workshops {
+        padding: 60px 0;
+      }
+
+      .workshops::after {
+        left: 20px;
+      }
+
+      .chronicles-track {
+        padding: 0 15px;
+      }
+
+      .chronicle-item {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        margin-bottom: 60px;
+        direction: ltr !important;
+      }
+
+      .chronicle-item::before {
+        left: 20px;
+      }
+
+      .chronicle-date-wrap {
+        align-items: flex-start !important;
+        padding-left: 45px;
+        margin-bottom: -10px;
+      }
+
+      .chronicle-content {
+        margin-left: 35px;
+        margin-right: 5px;
+        padding: 24px;
+        border-radius: 20px;
+      }
+
+      .chronicle-year {
+        font-size: 3.2rem;
+      }
+
+      .chronicle-day {
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+      }
+
+      .chronicle-icon {
+        font-size: 2rem;
+        margin-bottom: 15px;
+      }
+
+      .chronicle-title {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+      }
+
+      .chronicle-desc {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+
+      .workshops h2 {
+        font-size: 2.2rem;
+      }
+
+      .chronicle-gallery img {
+        height: 120px;
+      }
+    }
+
+    /* WHATSAPP ICON */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #25d366;
+      color: #FFF;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+      color: #fff;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+      }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-left {
+      animation: fadeUp 0.9s ease 0.05s both;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ==========================================
+   RESPONSIVE BREAKPOINTS
+   ========================================== */
+
+    /* Tablet - 1024px */
+    @media(max-width:1024px) {
+      nav {
+        padding: 16px 28px;
+      }
+
+      .nav-links {
+        gap: 20px;
+      }
+
+      .hero {
+        padding: 90px 40px 70px;
+        gap: 30px;
+      }
+
+      .research,
+      .impact,
+      .faces,
+      .support,
+      .safety,
+      .survey,
+      .community {
+        padding: 70px 40px;
+      }
+
+      .divider {
+        margin: 0 40px;
+      }
+
+      .hero-left {
+        padding-right: 20px;
+      }
+    }
+
+    /* Small Tablet - 860px */
+    @media(max-width:860px) {
+
+      .nav-links,
+      .nav-btn {
+        display: none;
+      }
+
+      .mobile-toggle {
+        display: flex;
+      }
+
+      nav {
+        padding: 14px 20px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 90px 20px 60px;
+        text-align: center;
+        gap: 40px;
+      }
+
+      .hero::before {
+        display: none;
+      }
+
+      .hero-left {
+        padding-right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-eyebrow {
+        justify-content: center;
+      }
+
+      .hero-sub {
+        border-left: none;
+        border-top: 2px solid rgba(224, 82, 82, 0.4);
+        padding-left: 0;
+        padding-top: 16px;
+        text-align: left;
+        max-width: 100%;
+      }
+
+      .hero-actions {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .hero-right {
+        padding-left: 0;
+      }
+
+      .hero-stat-card {
+        padding: 18px 22px;
+      }
+
+      .stat-big {
+        font-size: 2rem;
+      }
+
+      .research-inner,
+      .faces-inner,
+      .support-inner,
+      .survey-layout {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .impact-header {
+        flex-direction: column;
+        gap: 14px;
+        align-items: flex-start;
+      }
+
+      .impact-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .safety-tips {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .signs-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      /* Survey: hide iframe, show CTA on tablet */
+      .survey-right.desktop-survey {
+        display: none;
+      }
+
+      .survey-mobile-cta {
+        display: block;
+      }
+
+      .research,
+      .impact,
+      .faces,
+      .support,
+      .safety,
+      .workshops,
+      .survey,
+      .community {
+        padding: 60px 24px;
+      }
+
+      .divider {
+        margin: 0 24px;
+      }
+
+      footer {
+        padding: 20px 24px;
+      }
+    }
+
+    /* Mobile - 600px */
+    @media(max-width:600px) {
+      .impact-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .safety-tips {
+        grid-template-columns: 1fr;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .signs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.1rem;
+        letter-spacing: -1px;
+      }
+
+      .hero-sub {
+        font-size: 0.93rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-red,
+      .btn-ghost {
+        text-align: center;
+      }
+
+      .tactic:hover {
+        transform: none;
+        box-shadow: inset 3px 0 0 var(--red);
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .btn-subscribe {
+        width: 100%;
+      }
+
+      .social-links {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .social-link {
+        justify-content: center;
+      }
+
+      .research,
+      .impact,
+      .faces,
+      .support,
+      .safety,
+      .workshops,
+      .survey,
+      .community {
+        padding: 50px 16px;
+      }
+
+      .divider {
+        margin: 0 16px;
+      }
+
+      footer {
+        padding: 18px 16px;
+        text-align: center;
+        justify-content: center;
+      }
+
+      .support-visual {
+        padding: 24px 20px;
+      }
+
+      .survey-open-btn {
+        font-size: 0.93rem;
+        padding: 16px 20px;
+      }
+
+      .community h2 {
+        font-size: 2rem;
+        letter-spacing: -1.5px;
+      }
+    }
+
+    /* Very small - 380px */
+    @media(max-width:380px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .stat-big {
+        font-size: 1.7rem;
+      }
+
+      .grant-badge {
+        font-size: 0.68rem;
+        padding: 7px 10px;
+      }
+
+      .survey-card {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-main">CyberGuard <span class="logo-pill">Research</span></div>
+      <div class="nav-tagline">Cyberbullying affects minds, hearts, and lives · Awareness saves lives</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#research">Research</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#faces">Awareness</a></li>
+      <li><a href="#workshops">Workshops</a></li>
+      <li><a href="#support">Support</a></li>
+      <li><a href="#safety">Stay Safe</a></li>
+      <li><a href="#survey">Survey</a></li>
+    </ul>
+    <a href="#survey" class="nav-btn">Take Survey</a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu" role="navigation">
+    <a href="#research" onclick="closeMobileMenu()">Research</a>
+    <a href="#impact" onclick="closeMobileMenu()">Impact</a>
+    <a href="#faces" onclick="closeMobileMenu()">Awareness</a>
+    <a href="#workshops" onclick="closeMobileMenu()">Workshops</a>
+    <a href="#support" onclick="closeMobileMenu()">Support</a>
+    <a href="#safety" onclick="closeMobileMenu()">Stay Safe</a>
+    <a href="#survey" onclick="closeMobileMenu()">Survey</a>
+    <a href="#survey" class="mobile-survey-btn" onclick="closeMobileMenu()">✦ Take the Survey</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-blob blob1"></div>
+    <div class="hero-blob blob2"></div>
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span class="eyebrow-line"></span>Cybersecurity Awareness</div>
+      <h1>What Is<br />Security?<br /><em>An Illusion.</em></h1>
+      <p class="hero-sub">
+        Cyberbullying is not just a digital problem — it's a human one. Understanding it is the first step to defeating
+        it.
+      </p>
+      <div class="hero-actions">
+        <a href="#research" class="btn-red">View Research</a>
+        <a href="#support" class="btn-ghost">Get Support</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="stat-big">37<span>%</span></div>
+        <div class="stat-desc">of young people have experienced cyberbullying, many multiple times</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="stat-big"><span>2×</span></div>
+        <div class="stat-desc">Victims are twice as likely to suffer from depression and anxiety</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="stat-big">1 in <span>5</span></div>
+        <div class="stat-desc">Young people in India report online harassment affecting their mental health</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="research" id="research">
+    <div class="research-blob"></div>
+    <div class="research-inner">
+      <div class="reveal">
+        <div class="section-tag">Research Initiative</div>
+        <h2>A Novel Deep Learning Model to Identify <em>Cyberbullying</em></h2>
+        <p class="research-desc">
+          A government-funded research initiative exploring the intersection of artificial intelligence and mental
+          health — specifically targeting the detection and impact of cyberbullying among Indian youth.
+        </p>
+        <div class="grant-badge">🏛️ Grant No. DST/CSRI/2021/70</div>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-role">Principal Investigator</div>
+            <div class="team-name">Madhulika Sahoo</div>
+          </div>
+          <div class="team-card">
+            <div class="team-role">Co-Principal Investigator</div>
+            <div class="team-name">Sibi Chakkaravarthy Sethuraman</div>
+          </div>
+          <div class="team-card">
+            <div class="team-role">Junior Research Fellow</div>
+            <div class="team-name">Dr. S. Anitha</div>
+          </div>
+          <div class="team-card">
+            <div class="team-role">Research Associate</div>
+            <div class="team-name">Anuradha</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="section-tag">The Problem</div>
+        <h2>Its Impact on <em>Mental Health</em> of the Youth in India</h2>
+        <p class="research-desc">
+          The rapid growth of digital platforms has created new vectors for harassment. This research uses deep learning
+          to automatically identify cyberbullying patterns, enabling faster intervention and support for victims.
+        </p>
+        <p class="research-desc">
+          With millions of young Indians active on social media, the urgency of building robust detection systems has
+          never been greater. Our model processes text, images, and behavioral signals to flag harmful content in real
+          time.
+        </p>
+        <a href="#impact" class="btn-red" style="display:inline-block;">Explore the Impact →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="impact" id="impact">
+    <div class="impact-header reveal">
+      <h2>Cyberbullying:<br />More Than<br /><em>Just Words</em></h2>
+      <p class="impact-sub">The emotional toll of online harassment is real, lasting, and deeply damaging. Recognizing
+        the signs enables early intervention.</p>
+    </div>
+    <div class="impact-cards reveal">
+      <div class="impact-card">
+        <div class="impact-icon">🧠</div>
+        <h3>Psychological Damage</h3>
+        <p>Victims suffer from heightened anxiety, depression, and post-traumatic stress. Online harassment follows
+          victims home, making escape feel impossible.</p>
+        <span class="tag tag-red">Mental Health</span>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon">📚</div>
+        <h3>Academic Decline</h3>
+        <p>Students experiencing cyberbullying show measurable drops in academic performance, school attendance, and
+          long-term educational attainment.</p>
+        <span class="tag tag-gold">Education</span>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon">🤝</div>
+        <h3>Social Isolation</h3>
+        <p>Repeated online abuse erodes trust and confidence, leading victims to withdraw from social activities,
+          friendships, and community participation.</p>
+        <span class="tag tag-blue">Social Impact</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FACES -->
+  <section class="faces" id="faces">
+    <div class="faces-inner">
+      <div class="reveal">
+        <div class="section-tag">Tactics & Signs</div>
+        <h2>The Many Faces of <em>Cyberbullying</em></h2>
+        <p class="faces-sub">Understanding tactics used is essential. Cyberbullying takes many forms — recognize them to
+          protect yourself and others.</p>
+        <div class="tactic-list">
+          <div class="tactic">
+            <div class="tactic-num">01</div>
+            <div class="tactic-info">
+              <h4>Harassment & Threats</h4>
+              <p>Repeated sending of offensive or threatening messages</p>
+            </div>
+          </div>
+          <div class="tactic">
+            <div class="tactic-num">02</div>
+            <div class="tactic-info">
+              <h4>Cyberstalking</h4>
+              <p>Monitoring and following someone's online activity obsessively</p>
+            </div>
+          </div>
+          <div class="tactic">
+            <div class="tactic-num">03</div>
+            <div class="tactic-info">
+              <h4>Doxxing</h4>
+              <p>Publishing private personal information without consent</p>
+            </div>
+          </div>
+          <div class="tactic">
+            <div class="tactic-num">04</div>
+            <div class="tactic-info">
+              <h4>Impersonation</h4>
+              <p>Creating fake profiles to damage someone's reputation</p>
+            </div>
+          </div>
+          <div class="tactic">
+            <div class="tactic-num">05</div>
+            <div class="tactic-info">
+              <h4>Exclusion & Shaming</h4>
+              <p>Deliberately ostracizing or publicly humiliating someone</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="quote-block">
+          <blockquote>"Know the Signs, Protect Yourself and Others"</blockquote>
+          <div class="quote-source">— CyberGuard Awareness Initiative</div>
+        </div>
+        <div class="signs-grid">
+          <div class="sign-item">
+            <strong>Emotional withdrawal</strong>Becoming unusually quiet or distant after using devices
+          </div>
+          <div class="sign-item">
+            <strong>Avoiding devices</strong>Suddenly refusing to use phone or computer
+          </div>
+          <div class="sign-item">
+            <strong>Sleep disturbances</strong>Nightmares, insomnia, or excessive sleeping
+          </div>
+          <div class="sign-item">
+            <strong>Mood swings</strong>Unexplained anger, sadness or frustration
+          </div>
+          <div class="sign-item">
+            <strong>Declining grades</strong>Sudden drop in school performance or attendance
+          </div>
+          <div class="sign-item">
+            <strong>Loss of interest</strong>Withdrawal from hobbies and social activities
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="support" id="support">
+    <div class="support-inner">
+      <div class="reveal">
+        <div class="section-tag">You're Not Alone</div>
+        <h2>Support<br />Is <em>Available</em></h2>
+        <p class="support-text">
+          Taking the first step toward healing requires courage — but you don't have to face this alone. Immediate help,
+          professional guidance, and community support are within reach.
+        </p>
+        <div class="support-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>Document Everything</h4>
+              <p>Screenshot and save all evidence of bullying before blocking the offender.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>Tell a Trusted Adult</h4>
+              <p>Speak to a parent, teacher, counselor, or any trusted person in your life.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>Report on the Platform</h4>
+              <p>Use built-in reporting tools on the platform where the bullying occurred.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h4>Seek Professional Help</h4>
+              <p>A counselor or therapist can provide structured support for emotional recovery.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="support-visual">
+          <h3>Immediate Resources</h3>
+          <div class="resource-list">
+            <div class="resource">
+              <div class="resource-icon">📞</div>
+              <div class="resource-text">
+                <strong>iCall Helpline (India)</strong>
+                <span>9152987821 — Free psychological support</span>
+              </div>
+            </div>
+            <div class="resource">
+              <div class="resource-icon">💬</div>
+              <div class="resource-text">
+                <strong>Vandrevala Foundation</strong>
+                <span>1860-2662-345 — 24/7 mental health support</span>
+              </div>
+            </div>
+            <div class="resource">
+              <div class="resource-icon">🌐</div>
+              <div class="resource-text">
+                <strong>National Cybercrime Portal</strong>
+                <span>cybercrime.gov.in — Report online offences</span>
+              </div>
+            </div>
+            <div class="resource">
+              <div class="resource-icon">🏫</div>
+              <div class="resource-text">
+                <strong>School Counseling</strong>
+                <span>Connect with your institution's student support cell</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section class="safety" id="safety">
+    <div class="safety-header reveal">
+      <div class="section-tag" style="justify-content:center;margin-bottom:14px;">How To Stay Safe</div>
+      <h2>How Can <em>You</em><br />Stay Safe?</h2>
+      <p class="safety-sub">Simple, consistent habits dramatically reduce your exposure to online threats and
+        harassment.</p>
+    </div>
+    <div class="safety-tips reveal">
+      <div class="safety-tip">
+        <div class="tip-n">01</div>
+        <h4>Update Your Software Regularly</h4>
+        <p>Enable automatic updates for your OS, apps, and browser. Security patches close vulnerabilities attackers
+          exploit.</p>
+      </div>
+      <div class="safety-tip">
+        <div class="tip-n">02</div>
+        <h4>Think Before You Click</h4>
+        <p>Pause before clicking links or opening attachments, even from known senders. Verify suspicious requests
+          through a different channel.</p>
+      </div>
+      <div class="safety-tip">
+        <div class="tip-n">03</div>
+        <h4>Guard Your Personal Information</h4>
+        <p>Limit what you share publicly online. Oversharing enables stalkers, impersonators, and targeted harassment
+          campaigns.</p>
+      </div>
+      <div class="safety-tip">
+        <div class="tip-n">04</div>
+        <h4>Use Strong, Unique Passwords</h4>
+        <p>Use a password manager to generate complex passwords. Enable two-factor authentication on all important
+          accounts.</p>
+      </div>
+      <div class="safety-tip">
+        <div class="tip-n">05</div>
+        <h4>Audit Your Privacy Settings</h4>
+        <p>Review privacy settings on every platform. Restrict who can message you, view your content, or tag you in
+          posts.</p>
+      </div>
+      <div class="safety-tip">
+        <div class="tip-n">06</div>
+        <h4>Block & Report, Don't Engage</h4>
+        <p>Never argue with a bully online. Engaging amplifies conflict. Block immediately, report, and preserve
+          evidence.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKSHOPS -->
+  <section class="workshops" id="workshops">
+    <div class="workshops-bg-elements">
+      <div class="bg-shape shape-1"></div>
+      <div class="bg-shape shape-2"></div>
+      <div class="bg-shape shape-3" style="width:200px;height:200px;top:40%;right:10%;border-radius:20% 80% 30% 70%;">
+      </div>
+    </div>
+    <div class="workshops-header reveal">
+      <div class="section-tag" style="justify-content:center;margin-bottom:14px;">Our Outreach</div>
+      <h2>Workshop <em>Chronicles</em></h2>
+      <p class="workshops-sub">Empowering students and educators across India with knowledge, tools, and strategies to
+        combat cyberbullying and build a safer digital environment.</p>
+    </div>
+
+    <div class="chronicles-track reveal">
+      <!-- Rani Laxibai -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">April 26</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🏛️</span>
+          <h3 class="chronicle-title">Rani Laxibai College, Delhi</h3>
+          <p class="chronicle-desc">A deep-dive awareness session conducted for the student body of Rani Laxibai
+            College. The workshop focused on the bridge between digital behavior and psychological well-being in urban
+            educational settings.</p>
+          <ul class="chronicle-highlights">
+            <li>Identification of sophisticated social engineering tactics.</li>
+            <li>Legal recourse and reporting mechanisms in the NCR region.</li>
+            <li>Psychological impact of prolonged online harassment.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/DSC_5792.JPG"
+              alt="Workshop Session at Rani Laxibai College">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/DSC_5795.JPG"
+              alt="Student Interaction at Rani Laxibai College">
+          </div>
+        </div>
+      </div>
+
+      <!-- MMU -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">July 19</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🎓</span>
+          <h3 class="chronicle-title">Maa Manikeswari University</h3>
+          <p class="chronicle-desc">A foundational outreach program designed to sensitize first-generation digital users
+            about the risks of the unsecured web. This session marked a key milestone in our regional awareness
+            campaign.</p>
+          <ul class="chronicle-highlights">
+            <li>Foundations of digital hygiene and password security.</li>
+            <li>Community-based support systems for cyber-bullying victims.</li>
+            <li>Interactive Q&A on private data stewardship.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/2.1.%20MMU%2019-07-24.jpeg"
+              alt="MMU Workshop Group">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/2.2.%20MMU%2019-07-24.jpeg"
+              alt="Awareness Materials at MMU">
+          </div>
+        </div>
+      </div>
+
+      <!-- IITH -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">August 14</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🔬</span>
+          <h3 class="chronicle-title">IIT Hyderabad</h3>
+          <p class="chronicle-desc">A technical seminar presented at IIT Hyderabad, exploring the intersection of
+            AI-driven threat detection and human-centric security. The discussion engaged with engineering students on
+            building safer platforms.</p>
+          <ul class="chronicle-highlights">
+            <li>Architecting safety-first social media algorithms.</li>
+            <li>Machine Learning models for real-time toxicity detection.</li>
+            <li>Ethical considerations in automated content moderation.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/3.1.%20IITH%2C%2014-08-24.jpeg"
+              alt="Technical Talk at IIT Hyderabad">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/3.2.%20%20IITH%2C%2014-08-24.jpeg"
+              alt="Q&A Session at IITH">
+          </div>
+        </div>
+      </div>
+
+      <!-- VIT -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">October 04</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">💡</span>
+          <h3 class="chronicle-title">VIT, Vellore</h3>
+          <p class="chronicle-desc">A large-scale awareness drive at VIT Vellore, engaging thousands of tech-savvy
+            students. The session emphasized the role of youth as digital first-responders and ethical bystanders.</p>
+          <ul class="chronicle-highlights">
+            <li>Empowering bystanders for active digital intervention.</li>
+            <li>Digital footprint management for future professionals.</li>
+            <li>Collaborative strategies for campus-wide digital safety.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/4.1.%20VIT%2CVellore.jpeg"
+              alt="Large Audience at VIT Vellore">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/4.2.%20VIT%2CVellore.jpeg"
+              alt="Awareness Drive at VIT">
+          </div>
+        </div>
+      </div>
+
+      <!-- Amity -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">October 07</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">✨</span>
+          <h3 class="chronicle-title">Amity%20University</h3>
+          <p class="chronicle-desc">This interactive workshop focused on the legal framework surrounding cyber-offenses
+            in India. We discussed recent case studies to illustrate how digital evidence is handled and protected.</p>
+          <ul class="chronicle-highlights">
+            <li>Understanding the IT Act and Cybercrime reporting.</li>
+            <li>Preserving digital evidence for legal validation.</li>
+            <li>Psychological recovery and trauma-informed support.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/5.1.%20%20Amity%20University.jpeg"
+              alt="Legal Framework Seminar at Amity">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/5.2.%20%20Amity%20University.jpeg"
+              alt="Case Study Discussion at Amity">
+          </div>
+        </div>
+      </div>
+
+      <!-- SAIRAM -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">October 14</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🛡️</span>
+          <h3 class="chronicle-title">SAIRAM Institutions</h3>
+          <p class="chronicle-desc">Empowering the next generation of educators and students with proactive strategies.
+            This event focused on creating long-term institutional policies for digital kindness and safety.</p>
+          <ul class="chronicle-highlights">
+            <li>Developing institutional digital safety protocols.</li>
+            <li>Teacher-student collaboration in identifying red flags.</li>
+            <li>Workshop on peer-led counseling techniques.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/6.1.%20SAIRAM.jpeg"
+              alt="Policy Development at SAIRAM">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/6.2.%20SAIRAM.jpeg"
+              alt="Student-Teacher Session at SAIRAM">
+          </div>
+        </div>
+      </div>
+
+      <!-- SRM -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">November 07</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🌟</span>
+          <h3 class="chronicle-title">SRM University, Chennai</h3>
+          <p class="chronicle-desc">An impactful session centered on the psychology of online grooming and social media
+            influence. The workshop encouraged students to practice mindful digital citizenship.</p>
+          <ul class="chronicle-highlights">
+            <li>Recognizing social media manipulation and grooming.</li>
+            <li>The ethics of digital sharing and privacy control.</li>
+            <li>Roleplay: Defusing online conflict and bullying.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/7.2.%20SRM%2C%20Chennai.jpeg"
+              alt="Mindful Digital Citizenship at SRM">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/7.3.%20SRM%2C%20Chennai.jpeg"
+              alt="Social Media Safety Talk at SRM">
+          </div>
+        </div>
+      </div>
+
+      <!-- MMU 2 -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">November 28</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">📚</span>
+          <h3 class="chronicle-title">Maa Manikeswari University</h3>
+          <p class="chronicle-desc">A specialized follow-up session focused on regional data collection and local
+            awareness campaigns. We worked closely with the student community to identify unique localized threats.</p>
+          <ul class="chronicle-highlights">
+            <li>Regional trends in cyber-harassment and abuse.</li>
+            <li>Training local student ambassadors for outreach.</li>
+            <li>Analyzing survey data for targeted intervention.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/2.5.%20MMU%2019-07-24.jpeg"
+              alt="Follow-up Outreach at MMU">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/2.6.%20MMU%2019-07-24.jpeg"
+              alt="Local Threat Analysis at MMU">
+          </div>
+        </div>
+      </div>
+
+      <!-- JNU 1 -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2024</div>
+          <div class="chronicle-day">December 14</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🔍</span>
+          <h3 class="chronicle-title">IASP, JNU,%20Delhi</h3>
+          <p class="chronicle-desc">An expert talk at JNU exploring the sociological dimensions of cyber-harassment. The
+            session analyzed how power dynamics shift in digital spaces and impact marginalized voices.</p>
+          <ul class="chronicle-highlights">
+            <li>Sociology of online behavior and group dynamics.</li>
+            <li>Impact of cyberbullying on academic and social focus.</li>
+            <li>Cross-disciplinary approaches to digital safety.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/9.%201.%20IASP%2C%20JNU%2CDelhi.jpeg"
+              alt="Expert Talk at JNU Delhi">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/9.%202.%20IASP%2C%20JNU%2CDelhi.jpeg"
+              alt="Sociology Session at JNU">
+          </div>
+        </div>
+      </div>
+
+      <!-- JNU 2 -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2025</div>
+          <div class="chronicle-day">October 16</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🛰️</span>
+          <h3 class="chronicle-title">JNU,%20Delhi</h3>
+          <p class="chronicle-desc">An advanced workshop presenting our latest Deep Learning models. We demonstrated how
+            AI can be leveraged to identify subtle patterns of toxicity and provide real-time alerts to moderators.</p>
+          <ul class="chronicle-highlights">
+            <li>Live demo of toxicity detection models.</li>
+            <li>Data privacy in the age of automated monitoring.</li>
+            <li>Collaborative research: Humans and AI in moderation.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/10.%20JNU%2C%20Delhi.jpeg"
+              alt="Deep Learning Demo at JNU">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/10.1.%201.%20JNU%2C%20Delhi.jpeg"
+              alt="AI Research Presentation at JNU">
+          </div>
+        </div>
+      </div>
+
+      <!-- Vardhaman -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2025</div>
+          <div class="chronicle-day">October 25</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">⚙️</span>
+          <h3 class="chronicle-title">Vardhaman College of Engineering</h3>
+          <p class="chronicle-desc">An engineering-focused perspective on platform safety. We discussed the
+            implementation of proactive reporting tools and the importance of user-centric design in security features.
+          </p>
+          <ul class="chronicle-highlights">
+            <li>Developing frictionless reporting interfaces.</li>
+            <li>Back-end security for sensitive user data.</li>
+            <li>Building resilient digital platforms for youth.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/11.%20VARDHAMAN.jpeg"
+              alt="Engineering Seminar at Vardhaman">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/11.1.%20%20VARDHAMAN.jpeg"
+              alt="Security Feature Design at Vardhaman">
+          </div>
+        </div>
+      </div>
+
+      <!-- MDC -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2025</div>
+          <div class="chronicle-day">November 17</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🌾</span>
+          <h3 class="chronicle-title">Madel Degree College, Odisha</h3>
+          <p class="chronicle-desc">Bridging the digital divide in rural areas. This workshop provided essential
+            literacy and safety protocols for students transitioning into an increasingly online academic environment.
+          </p>
+          <ul class="chronicle-highlights">
+            <li>Essential cyber-safety for rural educational contexts.</li>
+            <li>Safe smartphone usage and payment security.</li>
+            <li>Building digital resilience in regional languages.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/12.%20MDC%2C%20Kariar.jpeg"
+              alt="Rural Outreach in Odisha">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/12.1.%20MDC%2C%20Kariar.jpeg"
+              alt="Digital Literacy Session in Odisha">
+          </div>
+        </div>
+      </div>
+
+      <!-- Utakala -->
+      <div class="chronicle-item">
+        <div class="chronicle-date-wrap">
+          <div class="chronicle-year">2025</div>
+          <div class="chronicle-day">November 24</div>
+        </div>
+        <div class="chronicle-content">
+          <span class="chronicle-icon">🏺</span>
+          <h3 class="chronicle-title">Utakala%20University, Bhubaneswar</h3>
+          <p class="chronicle-desc">Concluding awareness session focusing on the socio-economic impacts of
+            cyberbullying. We synthesized findings from our year-long outreach into a policy roadmap for local
+            institutions.</p>
+          <ul class="chronicle-highlights">
+            <li>Roadmap for regional digital safety standards.</li>
+            <li>Synthesizing research findings into actionable policy.</li>
+            <li>Empowering student networks for long-term support.</li>
+          </ul>
+          <div class="chronicle-gallery">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/13.%20Utakala%20University.jpeg"
+              alt="Concluding Policy Seminar at Utakala">
+            <img
+              src="cyber/DST%20WORKSHOP/1.%20Rani%20Laxibai%20College%20Delhi%2026042024/13.1.%20Utakala%20University.jpeg"
+              alt="Final Policy Roadmap Session">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SURVEY -->
+  <section class="survey" id="survey">
+    <div class="survey-layout">
+      <div class="survey-left reveal">
+        <div class="section-tag">Participate in Research</div>
+        <h2>Take the <em>Survey</em></h2>
+        <p>
+          This survey is a vital component of the DST project led by Maa Manikeshwari University in collaboration with
+          VIT-AP University. Your responses directly support research into the impact of cyberbullying on the mental
+          health of Indian youth.
+        </p>
+        <div class="survey-meta">
+          <div class="survey-meta-item">
+            <span class="meta-icon">📋</span>
+            <div><strong>8 pages</strong> · Takes approx. 10–15 minutes</div>
+          </div>
+          <div class="survey-meta-item">
+            <span class="meta-icon">🔒</span>
+            <div><strong>Fully anonymous</strong> · Your identity is protected</div>
+          </div>
+          <div class="survey-meta-item">
+            <span class="meta-icon">🏛️</span>
+            <div><strong>Govt. funded</strong> · DST/CSRI/2021/70, Ministry of Science & Technology</div>
+          </div>
+          <div class="survey-meta-item">
+            <span class="meta-icon">✋</span>
+            <div><strong>Voluntary</strong> · You may withdraw at any time</div>
+          </div>
+          <div class="survey-meta-item">
+            <span class="meta-icon">✉️</span>
+            <div>Queries: <strong>msahoo@kalahandiuniversity.ac.in</strong></div>
+          </div>
+        </div>
+        <div class="survey-disclaimer">
+          ⚠️ Confidentiality clause: Your identity is protected and kept confidential. Data is securely saved and used
+          only for project purposes — never for personal use.
+        </div>
+
+        <!-- Mobile CTA shown only on small screens -->
+        <div class="survey-mobile-cta" style="margin-top:28px;">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeFr-0q9MUKK3aSs3V09gaDa6jQis3uLWrbFxJYkLW8rHiBTQ/viewform"
+            target="_blank" rel="noopener noreferrer" class="survey-open-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            Open Survey in Browser
+          </a>
+          <div class="survey-card">
+            <h4>About This Survey</h4>
+            <p>Opens Google Forms in your browser for the best mobile experience. The survey is fully anonymous and
+              takes 10–15 minutes.</p>
+            <div class="survey-card-meta">
+              <div class="survey-chip">🔒 Anonymous</div>
+              <div class="survey-chip">📋 8 pages</div>
+              <div class="survey-chip">✋ Voluntary</div>
+              <div class="survey-chip">🏛️ Govt. funded</div>
+            </div>
+            <div class="survey-disclaimer">
+              ⚠️ Data is used solely for DST research purposes and kept strictly confidential.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop iframe (hidden on mobile via CSS) -->
+      <div class="survey-right desktop-survey reveal">
+        <div class="survey-frame-wrap">
+          <div class="survey-frame-bar">
+            <div class="frame-dot fd1"></div>
+            <div class="frame-dot fd2"></div>
+            <div class="frame-dot fd3"></div>
+            <div class="frame-url">docs.google.com/forms · DST Cyberbullying Survey</div>
+          </div>
+          <iframe class="survey-iframe"
+            src="https://docs.google.com/forms/d/e/1FAIpQLSeFr-0q9MUKK3aSs3V09gaDa6jQis3uLWrbFxJYkLW8rHiBTQ/viewform?embedded=true"
+            title="DST Cyberbullying Survey" loading="lazy" allowfullscreen>
+            Loading survey…
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section class="community" id="community">
+    <div class="community-inner reveal">
+      <div class="section-tag" style="justify-content:center;color:var(--muted);">Take Action</div>
+      <h2>Join Our<br /><em>Community</em></h2>
+      <p class="community-sub">
+        Get awareness updates, research findings, and safety tips delivered to your inbox. Together we can make the
+        digital world safer for everyone.
+      </p>
+      <div class="newsletter-form">
+        <input class="newsletter-input" type="email" placeholder="Your email address" />
+        <button class="btn-subscribe">Subscribe</button>
+      </div>
+      <div class="social-links">
+        <a href="#" class="social-link">⌥ GitHub</a>
+        <a href="#" class="social-link">◈ Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">CyberGuard Research</div>
+    <div class="footer-copy">© 2025 CyberGuard Awareness Initiative · DST/CSRI/2021/70</div>
+  </footer>
+
+  <!-- WhatsApp Floating Icon -->
+  <a href="https://chat.whatsapp.com/LdXdajqInZYIVKov9rog29" class="whatsapp-float" target="_blank"
+    rel="noopener noreferrer">
+    <svg style="width:35px; height:35px;" viewBox="0 0 24 24" fill="currentColor">
+      <path
+        d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.038 3.284l-.569 2.112 2.131-.545c.952.521 1.964.935 3.12.935 3.176 0 5.625-2.559 5.626-5.739 0-3.18-2.595-5.813-5.578-5.813zm3.841 8.314c-.211.616-1.058 1.01-1.716.809-1.264-.388-2.525-1.128-3.441-2.146-.693-.771-1.216-1.604-1.491-2.513-.237-.781.188-1.486.735-1.86.183-.125.414-.192.637-.192.177 0 .36.039.514.126.128.072.236.216.303.396.19.513.433 1.174.489 1.341.056.167.058.353-.053.518-.111.165-.244.31-.365.437-.081.085-.15.132-.073.28.312.598.656 1.031 1.142 1.412.513.401 1.034.602 1.662.822.19.067.33-.031.421-.132.148-.166.425-.503.626-.756.209-.258.469-.228.714-.132.245.096 1.558.734 1.824.868.266.134.441.203.508.31s.081.722-.168 1.164z" />
+      <path
+        d="M12.094 2c-5.468 0-9.911 4.412-9.911 9.88 0 1.922.547 3.719 1.49 5.234L2 22l5.04-1.317c1.474.81 3.163 1.277 4.965 1.277 5.468 0 9.911-4.419 9.911-9.885C21.917 6.749 17.561 2 12.094 2zM12.03 18.969c-1.21 0-2.38-.317-3.397-.916l-.244-.144-2.524.644.655-2.437-.158-.251c-.655-1.037-1-2.246-1-3.488 0-3.619 2.956-6.562 6.587-6.562 3.634 0 6.46 2.945 6.46 6.562 0 3.619-2.883 6.492-6.483 6.492z" />
+    </svg>
+  </a>
+
+  <script>
+    // Custom cursor (desktop only)
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    if (cursor && ring && window.matchMedia('(hover: hover)').matches) {
+      let mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      });
+      (function loop() {
+        rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11;
+        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+        requestAnimationFrame(loop);
+      })();
+      document.querySelectorAll('a,button,.tactic,.resource,.team-card').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.style.transform = 'translate(-50%,-50%) scale(2.2)';
+          ring.style.opacity = '0';
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+          ring.style.opacity = '1';
+        });
+      });
+    }
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 3) * 0.1}s`;
+      obs.observe(el);
+    });
+
+    // Mobile menu
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('active');
+      mobileToggle.classList.toggle('active');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+      mobileToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    });
+    function closeMobileMenu() {
+      mobileToggle.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+      mobileToggle.setAttribute('aria-label', 'Open menu');
+    }
+    // Close menu on resize to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 860) closeMobileMenu();
+    });
+  </script>
+</body>
+
+</html>
