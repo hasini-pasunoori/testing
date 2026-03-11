@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TASKR — Get Things Done</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --accent: #e8ff5a;
+    --text: #f0f0f0;
+    --muted: #555;
+    --done: #333;
+    --border: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+  }
+
+  .grain {
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  .wrapper {
+    width: 100%; max-width: 640px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 12vw, 88px);
+    letter-spacing: 2px;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .count {
+    font-size: 13px; color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; padding-bottom: 6px;
+  }
+
+  .input-row {
+    display: flex; gap: 10px; margin-bottom: 32px;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder { color: var(--muted); }
+
+  button.add-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 22px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+    white-space: nowrap;
+  }
+
+  button.add-btn:hover { transform: scale(1.04); opacity: 0.9; }
+  button.add-btn:active { transform: scale(0.97); }
+
+  .filters {
+    display: flex; gap: 6px; margin-bottom: 20px;
+  }
+
+  .filter-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 100px;
+    padding: 6px 16px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; cursor: pointer; transition: all 0.2s;
+  }
+
+  .filter-btn.active {
+    background: var(--accent); color: #000;
+    border-color: var(--accent); font-weight: 500;
+  }
+
+  .todo-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .todo-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    animation: slideIn 0.25s ease both;
+    transition: border-color 0.2s, opacity 0.2s;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .todo-item:hover { border-color: #3a3a3a; }
+  .todo-item.done { opacity: 0.45; }
+
+  .check {
+    width: 22px; height: 22px; flex-shrink: 0;
+    border: 2px solid var(--muted); border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; background: transparent;
+  }
+
+  .todo-item.done .check {
+    background: var(--accent); border-color: var(--accent);
+  }
+
+  .check::after {
+    content: '✓'; font-size: 13px; color: #000;
+    opacity: 0; transition: opacity 0.15s;
+  }
+
+  .todo-item.done .check::after { opacity: 1; }
+
+  .todo-text {
+    flex: 1; font-size: 15px; font-weight: 400;
+    line-height: 1.4; word-break: break-word;
+    transition: color 0.2s;
+  }
+
+  .todo-item.done .todo-text {
+    text-decoration: line-through; color: var(--muted);
+  }
+
+  .del-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 18px;
+    padding: 2px 6px; border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+    line-height: 1;
+  }
+
+  .del-btn:hover { color: #ff5555; background: rgba(255,85,85,0.08); }
+
+  .empty {
+    text-align: center; color: var(--muted);
+    font-size: 14px; padding: 48px 0;
+    letter-spacing: 0.05em;
+  }
+
+  .empty span { display: block; font-size: 36px; margin-bottom: 12px; }
+
+  .clear-row {
+    margin-top: 28px; display: flex; justify-content: flex-end;
+  }
+
+  .clear-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 6px;
+    padding: 8px 16px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .clear-btn:hover { border-color: #ff5555; color: #ff5555; }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrapper">
+  <header>
+    <h1>TASKR</h1>
+    <div class="count" id="count">0 tasks remaining</div>
+  </header>
+
+  <div class="input-row">
+    <input type="text" id="taskInput" placeholder="What needs to be done?" maxlength="200" />
+    <button class="add-btn" onclick="addTodo()">ADD</button>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('active', this)">Active</button>
+    <button class="filter-btn" onclick="setFilter('done', this)">Done</button>
+  </div>
+
+  <div class="todo-list" id="todoList"></div>
+
+  <div class="clear-row">
+    <button class="clear-btn" onclick="clearDone()">Clear completed</button>
+  </div>
+</div>
+
+<script>
+  let todos = JSON.parse(localStorage.getItem('taskr') || '[]');
+  let filter = 'all';
+
+  function save() { localStorage.setItem('taskr', JSON.stringify(todos)); }
+
+  function addTodo() {
+    const input = document.getElementById('taskInput');
+    const text = input.value.trim();
+    if (!text) return;
+    todos.unshift({ id: Date.now(), text, done: false });
+    input.value = '';
+    save(); render();
+  }
+
+  function toggle(id) {
+    todos = todos.map(t => t.id === id ? { ...t, done: !t.done } : t);
+    save(); render();
+  }
+
+  function remove(id) {
+    todos = todos.filter(t => t.id !== id);
+    save(); render();
+  }
+
+  function clearDone() {
+    todos = todos.filter(t => !t.done);
+    save(); render();
+  }
+
+  function setFilter(f, btn) {
+    filter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  }
+
+  function render() {
+    const list = document.getElementById('todoList');
+    const remaining = todos.filter(t => !t.done).length;
+    document.getElementById('count').textContent =
+      `${remaining} task${remaining !== 1 ? 's' : ''} remaining`;
+
+    const visible = todos.filter(t =>
+      filter === 'all' ? true : filter === 'done' ? t.done : !t.done
+    );
+
+    if (visible.length === 0) {
+      list.innerHTML = `<div class="empty"><span>${filter === 'done' ? '🎉' : '📋'}</span>${
+        filter === 'done' ? 'No completed tasks yet.' : 'Nothing to do. Add something!'
+      }</div>`;
+      return;
+    }
+
+    list.innerHTML = visible.map(t => `
+      <div class="todo-item ${t.done ? 'done' : ''}">
+        <div class="check" onclick="toggle(${t.id})"></div>
+        <div class="todo-text">${escapeHtml(t.text)}</div>
+        <button class="del-btn" onclick="remove(${t.id})">×</button>
+      </div>
+    `).join('');
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  document.getElementById('taskInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addTodo();
+  });
+
+  render();
+</script>
+</body>
+</html>
